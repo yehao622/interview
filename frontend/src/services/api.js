@@ -4,7 +4,7 @@ const api = axios.create({
     baseURL: process.env.REACT_APP_API_URL || window.location.origin,
     headers: {
         'Content-Type': 'application/json',
-        'X-API-Key': process.env.REACT_APP_API_KEY || ''
+        'X-API-Key': 'demo_public_key'
     },
     timeout: 30000 // 30 seconds for AI requests
 });
