@@ -1,0 +1,154 @@
+# Clinical Data Reconciliation Engine (Mini Version)
+
+AI-powered medication reconciliation and data quality validation system for healthcare providers.
+
+## Overview
+
+This application helps healthcare providers:
+- **Reconcile conflicting medication records** from multiple sources (EHR, pharmacy, patient portal) using AI
+- **Validate patient data quality** across 4 dimensions: completeness, accuracy, timeliness, and clinical plausibility
+- **Provide actionable recommendations** with confidence scoring and clinical safety checks
+
+## Architecture
+
+- **Backend**: Node.js + Express REST API
+- **Frontend**: React 18+ with functional components
+- **Database**: SQLite3 (caching, logging, audit trail)
+- **AI**: Google Gemini 2.5 Flash for clinical reasoning
+- **Testing**: Jest + Supertest
+
+## Features
+
+### 1. Medication Reconciliation (`/api/reconcile/medication`)
+- Analyzes conflicting medication records from multiple healthcare systems
+- Considers patient context (age, conditions, lab results)
+- Generates confidence scores (0-100%) with weighted factors:
+  - Source reliability (35%)
+  - Recency (30%)
+  - Clinical plausibility (25%)
+  - Data completeness (10%)
+- Provides clinical reasoning and recommended actions
+- Includes safety checks for drug-disease interactions
+
+### 2. Data Quality Validation (`/api/validate/data-quality`)
+- Assesses patient record quality across 4 dimensions:
+  - **Completeness**: Required fields populated
+  - **Accuracy**: Format validation, type checking
+  - **Timeliness**: Data freshness (<30 days ideal)
+  - **Clinical Plausibility**: Physiologically possible values
+- Detects issues with severity levels (high/medium/low)
+- Overall quality score (0-100)
+
+### 3. Additional Features
+- **LLM Response Caching**: ~60% cost reduction during testing
+- **Rate Limiting**: 30 AI requests per 15 minutes
+- **API Request Logging**: Full audit trail in SQLite
+- **API Key Authentication**: Disabled in development mode
+
+## Prerequisites
+
+- Node.js 20+ and npm
+- SQLite3
+- Google Gemini API key ([Get one here](https://ai.google.dev/))
+
+## Local Setup Instructions
+
+### 1. Clone Repository
+
+  git clone https://github.com/yehao622/interview.git
+  cd interview
+
+### 2. Backend Setup
+  
+  cd backend
+  npm install
+
+  - Create .env file
+  cp .env.example .env
+
+  - Edit .env and add your GEMINI_API_KEY
+  nano .env
+
+  (
+    Required environment variables in .env:
+      GEMINI_API_KEY=[your_api_key_here]
+      PORT=3001
+      NODE_ENV=development
+      API_KEY=dev_key_12345
+  )
+
+  - Start backend
+  npm start
+  (Backend runs at http://localhost:3001)
+
+### 3. Frontend Setup
+
+  cd frontend
+  npm install
+
+  - Create .env file
+  cp .env.example .env
+
+  - Start frontend:
+  npm start
+  (Frontend runs at http://localhost:3000)
+
+### 4. Access Application:
+   Frontend Dashboard: http://localhost:3000
+   Backend API: http://localhost:3001
+
+   - Running Tests(Synthetic test scenarios in "backend/tests/")
+   cd backend
+   npm test
+
+   - Medication reconciliation with valid input
+   - Input validation (missing fields, empty arrays)
+   - Data quality plausibility detection (impossible vitals)
+   - Completeness scoring for empty records
+   - 5 unit tests total
+   Reconciliation scenarios:
+     'reconciliation/reconciliation-scenario-1.json': Dose reduction due to renal impairment
+     'reconciliation/reconciliation-scenario-2.json': Conflicting anticoagulation therapy
+   Data quality scenarios:
+     'quality/data-quality-good.json': Well-documented patient (score ~85)
+     'quality/data-quality-poor.json': Stale data with implausible vitals (score ~40)
+     'quality/data-quality-empty.json': Empty record (score <20)
+
+## API Documentation
+### POST /api/reconcile/medication
+  - Request:
+    {
+      "patient_context": {
+        "age": 67,
+        "conditions": ["Type 2 Diabetes", "Hypertension"],
+        "recent_labs": {"eGFR": 45}
+      },
+      "sources": [
+        {
+          "system": "Hospital EHR",
+          "medication": "Metformin 1000mg twice daily",
+          "last_updated": "2024-10-15",
+          "source_reliability": "high"
+        }
+      ]
+    }
+
+  - Response:
+    {
+      "reconciled_medication": "Metformin 500mg twice daily",
+      "confidence_score": 0.88,
+      "reasoning": "Primary care record is most recent...",
+      "recommended_actions": ["Update Hospital EHR...", "..."],
+      "clinical_safety_check": "PASSED"
+    }
+
+## LLM Choice: Google Gemini-2.5-flash
+   - Cost-effective: ~10x cheaper than GPT-4 for development/testing
+   - Fast response times: <3 seconds for clinical reasoning
+   - Sufficient reasoning capability: Handles medication reconciliation logic effectively
+
+## License
+   MIT License
+
+## Author
+   Hao(Howard) Ye

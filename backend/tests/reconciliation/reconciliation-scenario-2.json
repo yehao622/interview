@@ -1,0 +1,21 @@
+{
+  "patient_context": {
+    "age": 72,
+    "conditions": ["Atrial Fibrillation", "Coronary Artery Disease"],
+    "recent_labs": {"INR": 2.5, "platelet_count": 180000}
+  },
+  "sources": [
+    {
+      "system": "Cardiology Clinic",
+      "medication": "Apixaban 5mg twice daily",
+      "last_updated": "2025-12-10",
+      "source_reliability": "high"
+    },
+    {
+      "system": "Emergency Department",
+      "medication": "Warfarin 5mg daily",
+      "last_updated": "2025-01-28",
+      "source_reliability": "high"
+    }
+  ]
+}

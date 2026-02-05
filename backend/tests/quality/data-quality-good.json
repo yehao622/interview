@@ -1,0 +1,16 @@
+{
+  "demographics": {
+    "name": "Jane Smith",
+    "dob": "1960-08-22",
+    "gender": "F"
+  },
+  "medications": ["Aspirin 81mg daily", "Atorvastatin 20mg daily"],
+  "allergies": ["Penicillin"],
+  "conditions": ["Hypertension", "Hyperlipidemia"],
+  "vital_signs": {
+    "blood_pressure": "145/92",
+    "heart_rate": 78,
+    "temperature": 98.6
+  },
+  "last_updated": "2026-01-15"
+}

@@ -1,0 +1,44 @@
+{
+  "name": "interview",
+  "version": "1.0.0",
+  "description": "Clinical Data Reconciliation Engine",
+  "main": "index.js",
+  "scripts": {
+    "start": "node backend/src/app.js",
+    "test": "cd backend && npm test",
+    "test:backend": "cd backend && npm test",
+    "test:frontend": "cd frontend && npm test",
+    "test": "jest --verbose --coverage"
+  },
+  "keywords": [],
+  "author": "Hao(Howard) Ye",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "@google/genai": "^1.39.0",
+    "axios": "^1.13.4",
+    "better-sqlite3": "^12.6.2",
+    "chart.js": "^4.5.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "express-validator": "^7.3.1",
+    "helmet": "^8.1.0",
+    "react-chartjs-2": "^5.3.1",
+    "react-router-dom": "^7.13.0",
+    "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.2",
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.11",
+    "supertest": "^7.2.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  }
+}
