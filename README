@@ -1,5 +1,7 @@
 # Clinical Data Reconciliation Engine (Mini Version)
 
+Live Demo: https://engine-demo.onrender.com
+
 AI-powered medication reconciliation and data quality validation system for healthcare providers.
 
 ## Overview
@@ -113,6 +115,46 @@ This application helps healthcare providers:
      'quality/data-quality-good.json': Well-documented patient (score ~85)
      'quality/data-quality-poor.json': Stale data with implausible vitals (score ~40)
      'quality/data-quality-empty.json': Empty record (score <20)
+
+## (Alternatively) Docker Deployment
+### Quick start with Docker
+
+  - Clone repository
+    git clone https://github.com/yehao622/interview.git
+    cd interview
+
+  - Create .env file
+    cat > .env << EOF
+    GEMINI_API_KEY=your_api_key_here
+    API_KEY=demo_public_key
+    EOF
+
+  - Build and run
+    docker-compose up --build
+
+  (Access at http://localhost:3001)
+
+## Deployment online as a demo
+### Live production deployment
+   Backend + Frontend: Deployed on Render.com using Docker
+    - Register render.com with Github account
+    - Click "New +" → "Web Service" 
+    - Connect your repository: [github.com/{username}/{repo}]
+    - configure the basic service with free-tier(Default values are fine for demo)
+    - Click 'Add Environment Variable' as below:
+        Node_ENV: production
+        PORT: 10000(Render use this as default)
+        [LLM_API_KEY](e.g. GEMINI_API_KEY) : [your_actual_llm_api_key]
+        API_KEY: demo_public_key 
+    - Configure Health check: Scroll to 'Health Check Path': /api/health
+    - Click "Deploy", Render will start building within 5 minutes (pay attention to logs if error occurs)
+    - Live URL will be generated automatically by Render 
+      looks like "https://engine-demo.onrender.com"
+
+### Docker Details:
+  - Persistent SQLite: Data stored in Docker volume
+  - Production-ready: Serves both frontend and backend
+  - Dockerfile and docker-compose.yml for configuration details.
 
 ## API Documentation
 ### POST /api/reconcile/medication
