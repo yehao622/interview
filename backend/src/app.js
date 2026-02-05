@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const database = require('./config/database');
+const path = require('path');
 
 const app = express();
 
@@ -11,6 +12,11 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+    res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
 
 // Middleware
 const requestLogger = require('./middleware/logger');
@@ -26,6 +32,17 @@ const validateRoutes = require('./routes/validate');
 
 app.use('/api/reconcile', authenticateApiKey, aiLimiter, reconcileRoutes);
 app.use('/api/validate', authenticateApiKey, aiLimiter, validateRoutes);
+
+// Serve static frontend files in production
+if (process.env.NODE_ENV === 'production') {
+    const path = require('path');
+    app.use(express.static(path.join(__dirname, '../public')));
+
+    // Catch-all route to serve React app for any non-API route
+    app.get(/^\/(?!api).*/, (req, res) => {
+        res.sendFile(path.join(__dirname, '../public', 'index.html'));
+    });
+}
 
 app.use(errorHandler);
 

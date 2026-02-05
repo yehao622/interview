@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - API_KEY=${API_KEY:-dev_key_12345}
+    volumes:
+      - sqlite-data:/app/backend/data
+    restart: unless-stopped
+
+volumes:
+  sqlite-data:
